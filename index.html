@@ -34,7 +34,7 @@ window.addEventListener("keydown", () => {
 
 
 /* =======================
-   BASIC SETUP
+   SETUP
 ======================= */
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -49,12 +49,7 @@ window.addEventListener("keydown", e => keys[e.key] = true);
 window.addEventListener("keyup", e => keys[e.key] = false);
 
 /* =======================
-   SPRITE SETUP
-   19x37 frames
-   row 0 = down
-   row 1 = left
-   row 2 = right
-   row 3 = up
+   KRIS
 ======================= */
 const sprite = new Image();
 sprite.src = "player.png";
@@ -65,7 +60,7 @@ const FRAMES_PER_DIR = 4;
 const SCALE = 3;
 
 /* ======================
-   KRIS
+   KRIS MOVEMENT
 ======================= */
 const player = {
   x: 320,
@@ -157,9 +152,8 @@ function draw() {
 
   const row = DIR_ROW[player.dir];
 
-  // draw from FEET (important for tall sprites)
   const drawX = Math.floor(player.x);
-  const drawY = Math.floor(player.y - FRAME_H * SCALE);
+  const drawY = Math.floor(player.y - FRAME_H * SCALE); //based off from the feet
 
   ctx.drawImage(
     sprite,
@@ -177,4 +171,5 @@ function draw() {
 
 </body>
 </html>
+
 
