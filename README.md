@@ -1,5 +1,19 @@
-this is a test thing i am doing using Deltarune as a base
+test thing made to learn a bit more over JS and have fun on web-making (possibly)
+ONLY WORKS ON PC AS OF NOW
 
-everything here is property of toby fox and his crew who made the game Deltarune
+to do
+- collision 
+- simple dialogue system
 
-PLEASE I SWEAR TO GOD I AM BEGGING YOU DONT KILL ME I JUST WANNA HAVE FUN
+for the future
+- more characters
+- scenes
+
+- BATTLE
+
+Credits
+
+sprites and audio used in this project are from Deltarune
+Deltarune is © Toby Fox
+
+this is a non-commercial project made for fun and is not affiliated with or endorsed by Toby Fox.
