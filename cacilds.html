@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>DELTARUNE</title>
+  <link rel="stylesheet" href="canvas.css">
+
+</head>
+<body>
+
+<audio id="bgm" src="music.mp3" loop></audio>
+<canvas id="game" width="640" height="480"></canvas>
+
+<script>
+const bgm = document.getElementById("bgm");
+
+window.addEventListener("keydown", () => {
+  bgm.volume = 0.2;
+  bgm.play();
+}, { once: true });
+
+const audioCtx = new AudioContext();
+const audio = new Audio("music.mp3");
+const track = audioCtx.createMediaElementSource(audio);
+track.connect(audioCtx.destination);
+audio.loop = true;
+
+window.addEventListener("keydown", () => {
+  audioCtx.resume();
+  audio.play();
+}, { once: true });
+
+
+
+/* =======================
+   BASIC SETUP
+======================= */
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+ctx.imageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled = false;
+
+
+const keys = {};
+window.addEventListener("keydown", e => keys[e.key] = true);
+window.addEventListener("keyup", e => keys[e.key] = false);
+
+/* =======================
+   SPRITE SETUP
+   19x37 frames
+   row 0 = down
+   row 1 = left
+   row 2 = right
+   row 3 = up
+======================= */
+const sprite = new Image();
+sprite.src = "player.png";
+
+const FRAME_W = 19;
+const FRAME_H = 37;
+const FRAMES_PER_DIR = 4;
+const SCALE = 3;
+
+/* ======================
+   KRIS
+======================= */
+const player = {
+  x: 320,
+  y: 240,
+  speed: 220,
+  dir: "down",
+  frame: 0,
+  frameTimer: 0,
+  moving: false,
+};
+
+const DIR_ROW = {
+  down: 0,
+  left: 1,
+  right: 2,
+  up: 3,
+};
+
+/* =======================
+   GAME LOOP
+======================= */
+let lastTime = 0;
+
+function loop(time) {
+  const dt = (time - lastTime) / 1000;
+  lastTime = time;
+
+  update(dt);
+  draw();
+
+  requestAnimationFrame(loop);
+}
+
+requestAnimationFrame(loop);
+
+/* =======================
+   UPDATE
+======================= */
+function update(dt) {
+  let dx = 0;
+  let dy = 0;
+  player.moving = false;
+
+  if (keys["w"] || keys["ArrowUp"]) {
+    dy -= 1;
+    player.dir = "up";
+  }
+  if (keys["s"] || keys["ArrowDown"]) {
+    dy += 1;
+    player.dir = "down";
+  }
+  if (keys["a"] || keys["ArrowLeft"]) {
+    dx -= 1;
+    player.dir = "left";
+  }
+  if (keys["d"] || keys["ArrowRight"]) {
+    dx += 1;
+    player.dir = "right";
+  }
+
+  if (dx !== 0 || dy !== 0) {
+    // normalize diagonal movement
+    const len = Math.hypot(dx, dy);
+    dx /= len;
+    dy /= len;
+
+    player.x += dx * player.speed * dt;
+    player.y += dy * player.speed * dt;
+    player.moving = true;
+  }
+
+  // Animate only while moving
+  if (player.moving) {
+    player.frameTimer += dt;
+    if (player.frameTimer > 0.15) {
+      player.frame = (player.frame + 1) % FRAMES_PER_DIR;
+      player.frameTimer = 0;
+    }
+  } else {
+    player.frame = 0; // idle frame
+  }
+}
+
+/* =======================
+   DRAW
+======================= */
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const row = DIR_ROW[player.dir];
+
+  // draw from FEET (important for tall sprites)
+  const drawX = Math.floor(player.x);
+  const drawY = Math.floor(player.y - FRAME_H * SCALE);
+
+  ctx.drawImage(
+    sprite,
+    player.frame * FRAME_W,
+    row * FRAME_H,
+    FRAME_W,
+    FRAME_H,
+    drawX,
+    drawY,
+    FRAME_W * SCALE,
+    FRAME_H * SCALE
+  );
+}
+</script>
+
+</body>
+</html>
