@@ -3,20 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <title>DELTARUNE</title>
-  <link rel="stylesheet" href="canvas.css">
+  <link rel="stylesheet" href="../css/canvas.css">
 
 </head>
 <body>
 
-<audio id="bgm" src="music.mp3" loop></audio>
-<canvas id="game" width="1920" height="1080"></canvas>
+  <div id="root">
+    <audio id="bgm" src="music.mp3" loop></audio>
+  
+
+    <div id="gamewindow">
+      <canvas id="game" width="2048" height="1024"></canvas>
+    </div>
+
+    <div id="UI">
+      <section id="tip"> <!--tip section on the JS thignaling-->
+        <h2>Use WASD or Arrow Keys to Move</h2>
+      </section>
+
+      <p>thing</p>
+
+      <section id="">
+        <p>something something</p>
+      </section>
+    </div>
+
+  </div>
 
 <script>
+/* =======================
+ VARIABLES & AUDIO
+======================= */
+
+const worldWidth  = map[0].length * TILE_SIZE;
+const worldHeight = map.length * TILE_SIZE;
+
+
+import { Camera } from "./camera.js";
+import { TileMap } from "./tiles.js";
+import { maps } from "./maps.js";
+
+const tileMap = new TileMap(maps.room1);
+
+const camera = new Camera(
+  canvas.width,
+  canvas.height,
+  tileMap.width * TILE_SIZE,
+  tileMap.height * TILE_SIZE
+);
+
+
+
 const bgm = document.getElementById("bgm");
+const tipSection = document.getElementById("tip");
 
 window.addEventListener("keydown", () => {
   bgm.volume = 0.2;
   bgm.play();
+
+  tipSection.remove();
+
 }, { once: true });
 
 const audioCtx = new AudioContext();
@@ -42,7 +88,6 @@ ctx.imageSmoothingEnabled = false;
 ctx.webkitImageSmoothingEnabled = false;
 ctx.mozImageSmoothingEnabled = false;
 
-
 const keys = {};
 window.addEventListener("keydown", e => keys[e.key] = true);
 window.addEventListener("keyup", e => keys[e.key] = false);
@@ -62,8 +107,8 @@ const SCALE = 3;
    KRIS MOVEMENT
 ======================= */
 const player = {
-  x: 320,
-  y: 240,
+  x: 1000,
+  y: 500,
   speed: 220,
   dir: "down",
   frame: 0,
@@ -170,7 +215,6 @@ function draw() {
 
 </body>
 </html>
-
 
 
 
