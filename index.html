@@ -2,8 +2,8 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>DELTARUNE</title>
-  <link rel="stylesheet" href="../css/canvas.css">
+<title>game</title>
+  <link rel="stylesheet" href="canvas.css">
 
 </head>
 <body>
@@ -34,26 +34,6 @@
 /* =======================
  VARIABLES & AUDIO
 ======================= */
-
-const worldWidth  = map[0].length * TILE_SIZE;
-const worldHeight = map.length * TILE_SIZE;
-
-
-import { Camera } from "./camera.js";
-import { TileMap } from "./tiles.js";
-import { maps } from "./maps.js";
-
-const tileMap = new TileMap(maps.room1);
-
-const camera = new Camera(
-  canvas.width,
-  canvas.height,
-  tileMap.width * TILE_SIZE,
-  tileMap.height * TILE_SIZE
-);
-
-
-
 const bgm = document.getElementById("bgm");
 const tipSection = document.getElementById("tip");
 
